@@ -1,0 +1,31 @@
+#Assignment 2 – Big Data and Text Analytics
+#1. Copy the file into your own directory on Linux server 
+cd /home/kadochnikov/data/ Municipal_Court_Caseload_Information.zip 
+cp /home/stephenevans/data cd /home/stephenevans/data/ 
+#2. Unzip the file 
+unzip Municipal_Court_Caseload_Information.zip 
+head Municipal_Court_Caseload_Information.csv 
+#3. Load the file into Hive table hive 
+CREATE TABLE stephenevanshw2 (OffenseCaseType string, OffenseDate string, OffenseTime string, OffenseChargeDescription string, OffenseStreetName string, OffenseCrossStreetCheck string, OffenseCrossStreet string, SchoolZone string,ConstructionZone string, CaseClosed string) 
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES ( "separatorChar" = ",") STORED AS TEXTFILE 
+#4. Ensure your process the header record correctly 
+tblproperties ("skip.header.line.count"="1"); 
+LOAD DATA LOCAL INPATH '/home/stephenevans/data/Municipal_Court_Caseload_Information.csv' INTO TABLE stephenevanshw2; 
+select * from stephenevanshw2 limit 10; 
+^C 
+cd /home/stephenevans/data/ 
+5. Delete both zipped file and CSV file from Linux machine, keeping only the file in HDFS 
+rm Municipal_Court_Caseload_Information.csv 
+rm Municipal_Court_Caseload_Information.zip 
+#6. Calculate frequency of offences by Offense Case Type 
+hive 
+SELECT offensecasetype, COUNT (*) FROM stephenevanshw2 GROUP BY offensecasetype; 
+Total MapReduce CPU Time Spent: 1 minutes 41 seconds 280 msec OK 
+CO 240308 
+RL 224188 
+PK 3388981 
+CM 319078 
+TR 4313221 Time taken: 39.703 seconds, Fetched: 5 row(s)
+7. Identify the most frequent offences by Offense Charge Description (Show Offense Charge Description and offence frequency count in descending order). 
+INSERT OVERWRITE LOCAL DIRECTORY '/home/stephenevans/data' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
+SELECT offensechargedescription, COUNT (*) as cnt FROM stephenevanshw2 GROUP BY offensechargedescription ORDER BY cnt desc;
