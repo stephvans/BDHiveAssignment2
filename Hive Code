@@ -20,12 +20,6 @@ rm Municipal_Court_Caseload_Information.zip
 #6. Calculate frequency of offences by Offense Case Type 
 hive 
 SELECT offensecasetype, COUNT (*) FROM stephenevanshw2 GROUP BY offensecasetype; 
-Total MapReduce CPU Time Spent: 1 minutes 41 seconds 280 msec OK 
-CO 240308 
-RL 224188 
-PK 3388981 
-CM 319078 
-TR 4313221 Time taken: 39.703 seconds, Fetched: 5 row(s)
 7. Identify the most frequent offences by Offense Charge Description (Show Offense Charge Description and offence frequency count in descending order). 
 INSERT OVERWRITE LOCAL DIRECTORY '/home/stephenevans/data' ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
 SELECT offensechargedescription, COUNT (*) as cnt FROM stephenevanshw2 GROUP BY offensechargedescription ORDER BY cnt desc;
